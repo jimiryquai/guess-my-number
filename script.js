@@ -7,12 +7,11 @@ const getRandomIntInclusive = function (min, max) {
 }
 
 const secretNumber = getRandomIntInclusive(1, 20);
-document.querySelector('.number').textContent = secretNumber;
 let score = 20;
 
 document.querySelector('.again').addEventListener('click', function () {
-location.reload();
-return false;
+    location.reload();
+    return false;
 });
 
 document.querySelector('.check').addEventListener('click', function () {
@@ -23,11 +22,13 @@ document.querySelector('.check').addEventListener('click', function () {
     } else if (guess === secretNumber) {
         document.querySelector('.message').textContent = '🎉 Correct Number!';
         document.querySelector('.highscore').textContent = score;
+        document.querySelector('.number').textContent = secretNumber;
     } else if (guess > secretNumber) {
         if (score > 1) {
             document.querySelector('.message').textContent = 'Too High!';
             score--;
             document.querySelector('.score').textContent = score;
+            document.querySelector('.number').textContent = "?";
         } else {
             document.querySelector('.message').textContent = 'Game Over!';
             document.querySelector('.score').textContent = 0;
@@ -37,6 +38,7 @@ document.querySelector('.check').addEventListener('click', function () {
             document.querySelector('.message').textContent = 'Too Low!';
             score--;
             document.querySelector('.score').textContent = score;
+            document.querySelector('.number').textContent = "?";
         } else {
             document.querySelector('.message').textContent = 'Game Over!';
             document.querySelector('.score').textContent = 0;
