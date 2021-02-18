@@ -1,6 +1,6 @@
 'use strict';
 
-const getRandomIntInclusive = function (min, max) {
+const getRandomIntInclusive = (min, max) => {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
@@ -9,52 +9,52 @@ const getRandomIntInclusive = function (min, max) {
 const secretNumber = getRandomIntInclusive(1, 20);
 let score = 20;
 let highScore = 0;
+let buttonCheck = document.querySelector('.check');
+let buttonAgain = document.querySelector('.again');
+let inputGuess = document.querySelector('.guess');
 
-document.querySelector('.check').addEventListener('click', function () {
-    const guess = Number(document.querySelector('.guess').value);
+let setMessageText = (messageTxt) => document.querySelector('.message').textContent = messageTxt;
+let setNumberText = (numberTxt) => document.querySelector('.number').textContent = numberTxt;
+let setScoreText = (scoreTxt) => document.querySelector('.score').textContent = scoreTxt;
+let setNumberWidth = (numberWidth) => document.querySelector('.number').style.width = numberWidth;
+let setBgColor = (bgColor) => document.body.style.backgroundColor = bgColor;
+
+
+buttonCheck.addEventListener('click', () => {
+    let guess = Number(inputGuess.value);
     // executed if player's hasn't entered a guess
     if (!guess) {
-        document.querySelector('.message').textContent = '⛔ No Number';
+        setMessageText('⛔ No Number');
         // executed when player guesses correctly
     } else if (guess === secretNumber) {
-        document.querySelector('.message').textContent = '🎉 Correct Number!';
-        document.querySelector('.number').textContent = secretNumber;
-        document.querySelector('.number').style.width = "30rem";
-        document.body.style.backgroundColor = "green";
+        setMessageText('🎉 Correct Number!');
+        setNumberText(secretNumber);
+        setNumberWidth("30rem");
+        setBgColor("green");
         if (score > highScore) {
             highScore = score;
             document.querySelector('.highscore').textContent = highScore;
         }
-        // executed if player's guesses is too high 
-    } else if (guess > secretNumber) {
+        // executed when guess is wrong
+    } else if (guess !== secretNumber) {
         if (score > 1) {
-            document.querySelector('.message').textContent = 'Too High!';
+            setMessageText(guess > secretNumber ? 'Too High!' : 'Too Low!');
             score--;
-            document.querySelector('.score').textContent = score;
-            document.querySelector('.number').textContent = "?";
+            setScoreText(score);
+            setNumberText("?");
         } else {
-            document.querySelector('.message').textContent = 'Game Over!';
-            document.querySelector('.score').textContent = 0;
-        }
-        // executed if player's guesses is too low
-    } else if (guess < secretNumber) {
-        if (score > 1) {
-            document.querySelector('.message').textContent = 'Too Low!';
-            score--;
-            document.querySelector('.score').textContent = score;
-            document.querySelector('.number').textContent = "?";
-        } else {
-            document.querySelector('.message').textContent = 'Game Over!';
-            document.querySelector('.score').textContent = 0;
+            setMessageText('Game Over!');
+            setScoreText(0);
         }
     }
-})
+});
 
-document.querySelector('.again').addEventListener('click', function () {
+buttonAgain.addEventListener('click', () => {
     score = 20;
-    document.querySelector('.message').textContent = 'Start guessing...';
-    document.querySelector('.score').textContent = score;
-    document.querySelector('.number').textContent = '?';
-    document.querySelector('.guess').value = '';
-    document.body.style.backgroundColor = "#222";
+    setMessageText('Start guessing...');
+    setScoreText(score);
+    setNumberText('?');
+    inputGuess.value = '';
+    setBgColor("#222");
+    setNumberWidth("15rem");
 });
